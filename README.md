@@ -20,7 +20,7 @@ On the “View Sheet Poperties” tab the Tool also allows viewing all the runti
 
 ![readme3](images/readme3.png)
 
-### Code Snips for Sheet and TabStyle
+### Code Snips for Sheet and Tab
 
 The index number (1,2,3,...) of the selected Tab is returned by ```CHOICE(?Sheet)```. If a Tab is inserted or deleted the index numbers of the subsequent tabs will change which makes using CHOICE() problematic for Tab specific code, the code will no longer execute for the correct tab.
 
