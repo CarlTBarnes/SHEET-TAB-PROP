@@ -31,7 +31,7 @@ The index number (1,2,3,...) of the selected Tab is returned by ```CHOICE(?Sheet
  PROP:Child plus PROP:NumTabs are useful to iterrate through all the Tabs on a Sheet using this code:
 ```Clarion
  TabNdx   USHORT
- TabFEQ   USHORT
+ TabFEQ   LONG
    CODE
    LOOP TabNdx=1 TO ?Sheet{PROP:NumTabs}
         TabFEQ=?Sheet{PROP:Child, TabNdx}  

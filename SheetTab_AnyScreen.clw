@@ -28,7 +28,8 @@ ClaFeqName          PROCEDURE(LONG Feq),STRING
 ClaFieldNameRTL  PROCEDURE(LONG pFEQ),CSTRING,RAW,NAME('Cla$FIELDNAME'),DLL(dll_mode)
         END
   END
-
+  
+  !Project Defines Add: _AnyScreenPresent_=>1
   !== Added AnyScreen Here == Top ==
   PRAGMA('project(#file copy 7z.exe)')      !#PROJECT('None(7z.exe),CopyToOutputDirectory=Always')
   PRAGMA('link(ClaAnyScreen.lib)')          !#PROJECT('ClaAnyScreen.lib')
@@ -324,8 +325,7 @@ DOO.PrepareWindow PROCEDURE()
 
 
 DOO.Prep_Manifest_ON PROCEDURE()
-!     DATA
-F LONG
+F LONG(0)
     CODE
     !Did not work: IF ~SYSTEM{PROP:ThemeActive} THEN EXIT.  !Was there a Manifest
 
@@ -346,7 +346,6 @@ F LONG
 
 !----------------------------------------------------
 DOO.BuildSheetCODE PROCEDURE()
-!     DATA
 StyleCode   PSTRING(100)
 S1  LONG
 
@@ -472,10 +471,9 @@ PanzRect    STRING(200)
 
 !----------------------------------------------------
 DOO.ReadPropsOfSheet PROCEDURE()
-!     DATA
-S1  LONG
-TbFeq   USHORT
-TbNdx   USHORT
+S1      LONG,AUTO
+TbFeq   LONG,AUTO
+TbNdx   USHORT,AUTO
     CODE
     DOO.BuildSheetCODE()
     S1=?Sheet1
@@ -621,10 +619,9 @@ DOO.TipsOnControls PROCEDURE()
 
 !-----------------------------------------------------
 DOO.ColorPickButton PROCEDURE()
-!     DATA
-Clr          LONG
-ColorFEQ     LONG
-TabTxt       PSTRING(10)
+Clr          LONG(0)
+ColorFEQ     LONG,AUTO
+TabTxt       PSTRING(10),AUTO
     CODE
     ColorFEQ = ?Sheet1{PROP:ChoiceFEQ}
     TabTxt = 'Tab ' & CHOICE(?Sheet1)
@@ -644,11 +641,10 @@ TabTxt       PSTRING(10)
     RETURN
 !---------------------------------------------------------
 DOO.TextOnTabPick PROCEDURE()
-!     DATA
-PopNo   USHORT
-TbFEQ   USHORT
-TbNdx   USHORT
-TabTxt  PSTRING(10)
+PopNo   USHORT,AUTO
+TbFEQ   LONG,AUTO
+TbNdx   USHORT,AUTO
+TabTxt  PSTRING(10),AUTO
     CODE
     TbFEQ  = ?Sheet1{PROP:ChoiceFEQ}
     TabTxt = 'Tab ' & CHOICE(?Sheet1)
@@ -684,10 +680,9 @@ TabTxt  PSTRING(10)
     RETURN
 !---------------------------------------------------------
 DOO.IconOnTabPick PROCEDURE()
-!     DATA
-PopNo   USHORT
-TbFeq   USHORT
-TbNdx   USHORT
+PopNo   USHORT,AUTO
+TbFeq   LONG,AUTO
+TbNdx   USHORT,AUTO
 IconEqt ULONG(7F0102FFh)             !1st   ICON:Pick EQUATE ('<0FFH,02H,01H,7FH>') = 7F0102FFh
 IconStr STRING(4),OVER(IconEqt)      !Next  ICON:Save EQUATE ('<0FFH,02H,02H,7FH>') = 7F0202FFh
 IcoIncr ULONG(00010000h)             !                                                   10000h increment
