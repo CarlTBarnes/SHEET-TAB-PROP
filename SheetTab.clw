@@ -384,9 +384,9 @@ PanzRect    STRING(200)
              CHOOSE(~PropSpread,'',', SPREAD') & |
              CHOOSE(~PropWizard,'',', WIZARD') & |
              CHOOSE(~PropNoSheet,'',', NOSHEET') &'  '& |  
-             |  !CHOOSE(~PropFlat   ,'',', FLAT') &'  '& |      !5/13/26 "FLAT" does not work in Code, Prop:Flat in 12.0.14000
              '<13,10>' & |
-             CHOOSE(1=PropBrokenTabs OR Scrolling<2,'','<13,10>?Sheet{{PROP:BrokenTabs}=False') & |
+             CHOOSE(1=PropBrokenTabs OR Scrolling<2,'','<13,10>?Sheet{{PROP:BrokenTabs}=False') & |   !Broken only affects Scrolling tabs so don't show unless scrolling
+             CHOOSE(~PropFlat   ,'','<13,10>?Sheet{{PROP:Flat}=1') &'  '& |  !5/13/26 "FLAT" doesn't work as Window Attribute like it does for other controls. Prop:Flat added in 12.0.14000
              CHOOSE(~PropLayout,'','<13,10>?Sheet{{PROP:Layout}=1') & |
              CHOOSE(~PropNoTheme,'','<13,10>?Sheet{{PROP:NoTheme}=1') & |
              CHOOSE(~TabMinWidth,'','<13,10>?Sheet{{PROP:MinWidth}='& TabMinWidth) & |

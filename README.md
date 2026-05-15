@@ -43,7 +43,7 @@ The index number (1,2,3,...) of the selected Tab is returned by ```CHOICE(?Sheet
 ### Clarion 12.0.14000 adds PROP:Flat
 
 Clarion 12.0.14000 changes note "FIX Drawing of TABs when the SHEET has the FLAT attribute".
- The net effect of this is PROP:Flat works with Sheets. The FLAT attibute on the Sheet is not accepted by the compiler.
+ The net effect of this is PROP:Flat now works with Sheets. The FLAT attibute on the Sheet is not accepted by the compiler.
  Its possible to do this in prior Clarion versions using Windows API Sheet Style TCS_FLATBUTTONS.
 
 In this tool a new Flat checkbox allows viewing the effect of the Flat attrribute.
@@ -57,8 +57,8 @@ New FlatTest project allows comparing 2 Sheets side-by-side where the left is no
   E.g. many "Tab Sheet Style" picks (e.g. Black & White) already have no 3D effect.
  
 There is a separate FlatTest_Style.CwProj project that builds the code clw with a Manifest to enable Visual Styles.
- This help confirm that Flat has no effect when styles are in use. The "No Theme" box can be checked to turn off Styles on the Sheet.
+ This helps confirm that Flat has no effect when styles are in use. The "No Theme" box can be checked to turn off Styles on the Sheet.
  
-Another use for this new project is the create a test that compares Sheets with different configurations otyher than Flat.
+A future use for this is to create more tests that compare Sheets with different configurations other than Flat.
 
 ![readmeflat1](images/readmeflat1.png) 
