@@ -49,4 +49,16 @@ Clarion 12.0.14000 changes note "FIX Drawing of TABs when the SHEET has the FLAT
 In this tool a new Flat checkbox allows viewing the effect of the Flat attrribute.
  Flat removes the 3D effect on the Tab ears and Sheet border. 
  There are many tab settings that Flat has no effect.
+
+### Flat Test Project
+
+New FlatTest project allows comparing 2 Sheets side-by-side where the left is normal and the right is flat.
+ This shows in many congigurations the Flat has no effect.
+  E.g. many "Tab Sheet Style" picks (e.g. Black & White) already have no 3D effect.
  
+There is a separate FlatTest_Style.CwProj project that builds the code clw with a Manifest to enable Visual Styles.
+ This help confirm that Flat has no effect when styles are in use. The "No Theme" box can be checked to turn off Styles on the Sheet.
+ 
+Another use for this new project is the create a test that compares Sheets with different configurations otyher than Flat.
+
+![readmeflat1](images/readmeflat1.png) 
