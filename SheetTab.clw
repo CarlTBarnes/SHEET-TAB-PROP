@@ -6,6 +6,10 @@
 !
 ! For more see MSDN on Tab Controls   https://docs.microsoft.com/en-us/windows/win32/controls/tab-controls
 ! There are messages that get info not available via the RTL like One Tab's RECT or Row Count.
+! 
+! Change History
+! May 13 2026   Added FLAT (PROP:FLAT) new in 12.0.14000 "FIX Drawing of TABs when the SHEET has the FLAT attribute." 
+!                     Prior to 14000 see Windows API "Tab Controls and Property Sheets" Styles TCS_FLATBUTTONS'
 ! --------------------------------------------------------------------------------------------------
 !
 !PROP:Angle     - Changes Text angle on the Ears but it does not look good. Seems like 900 checks UP
@@ -45,10 +49,11 @@ ReadProp    STRING(4000)         !Built by SHT CLASS .RDxxx
 ReadPropShowALL  BOOL            !SHT.RD shows blanks
 SheetCode   STRING(250)          !SHEET() Code as Text
 
-PropNoSheet  SHORT
-PropWizard   SHORT
-PropSpread   SHORT !TABs are evenly spaced on one line (PROP:SPREAD).
-PropLayout   SHORT !TABs Right-to-Left (PROP:LAYOUT)
+PropSpread   SHORT !PROP:SPREAD   Tabs are evenly spaced on one line
+PropNoSheet  SHORT !PROP:NoSheet  The TABs display without a visible sheet to contain the controls. This creates a "floating tab" effect. 
+PropWizard   SHORT !PROP:Wizard   SHEET control that does not display its TAB controls. This allows the program to direct the user through each TAB in a specified sequence (usually with "Next" and "Previous" buttons).
+PropFlat     SHORT !PROP:FLAT     05/12/26 added in C12.14000 "FIX Drawing of TABs when the SHEET has the FLAT attribute."
+PropLayout   SHORT !PROP:LAYOUT   TABs display Right-to-Left
 PropNoTheme  SHORT !It prevents the Operating System theme color from being applied to the SHEET /TAB  (PROP:NoTHEME)
 
 PropHscroll  SHORT !TABs display all on one row instead of multiple rows, no matter how many TABs there are (PROP:HSCROLL). Right and left (or up and down) scroll buttons appear at either end of the TABs to scroll through the TABs.
@@ -115,10 +120,11 @@ Window WINDOW('SHEET TAB - Property and Attribute Explorer'),AT(,,388,263),GRAY,
                 CHECK('Spread Tabs to Fill One Line'),AT(9,91),USE(PropSpread)
                 CHECK('No Sheet - No 3D Panel'),AT(9,102),USE(PropNoSheet)
                 CHECK('Wizard - No Tab Ears'),AT(9,111),USE(PropWizard)
-                CHECK('Flip Tabs Right -to- Left'),AT(9,122),USE(PropLayout)
-                CHECK('No OS Theme / Visual Styles'),AT(9,131),USE(PropNoTheme)
-                PROMPT('Tab Sheet Style:'),AT(9,144),USE(?Style:Prompt)
-                LIST,AT(65,144,66,10),USE(SheetStyle),DROP(9),FROM('Default|#0|Black & White|#1|Colo' & |
+                CHECK('Flat - No 3D Effects 12.14000'),AT(9,120),USE(PropFlat)
+                CHECK('Flip Tabs Right -to- Left'),AT(9,131),USE(PropLayout)
+                CHECK('No OS Theme / Visual Styles'),AT(9,140),USE(PropNoTheme)
+                PROMPT('Tab Sheet Style:'),AT(9,152),USE(?Style:Prompt)
+                LIST,AT(65,152,66,10),USE(SheetStyle),DROP(9),FROM('Default|#0|Black & White|#1|Colo' & |
                         'red|#2|Squared|#3|Boxed|#4')
                 BUTTON('Text...'),AT(147,6,35,12),USE(?TextPickBtn),TIP('Popup to pick from a variet' & |
                         'y of Tab Ear Label text<13,10>to change "Tab1, Tab2..." to Months, Colors o' & |
@@ -131,21 +137,22 @@ Window WINDOW('SHEET TAB - Property and Attribute Explorer'),AT(,,388,263),GRAY,
                 SPIN(@n2),AT(207,152,30,10),USE(TabCount),HVSCROLL,RANGE(1,12)
                 CHECK('Tab Rectange'),AT(260,152),USE(TabRectShow),TIP('Show Yellow Box over Tab REC' & |
                         'T using PROP:TabRect')
-                GROUP,AT(330,12,49,152),USE(?GroupOfPropCHECK),FONT('Consolas')
-                    STRING('PROP:'),AT(345,13),USE(?Prop:Heading)
-                    CHECK('Above'),AT(334,22),USE(PropAbove2)
-                    CHECK('Below'),AT(334,31),USE(PropBelow2)
-                    CHECK('Left'),AT(334,40),USE(PropLeft2)
-                    CHECK('Right'),AT(334,49),USE(PropRight2)
-                    CHECK('UP  '),AT(334,60),USE(PropUp2)
-                    CHECK('Down'),AT(334,69),USE(PropDown2)
-                    CHECK('UpDown'),AT(334,78),USE(PropUpDown2)
-                    CHECK('HScroll'),AT(334,89),USE(PropHscroll2)
-                    CHECK('Join'),AT(334,98),USE(PropJoin2)
-                    CHECK('Broken'),AT(334,107),USE(PropBrokenTabs,, ?PropBrokenTabs:2)
-                    CHECK('Spread'),AT(334,118),USE(PropSpread,, ?PropSpread:2)
-                    CHECK('NoSheet'),AT(334,127),USE(PropNoSheet,, ?PropNoSheet:2)
-                    CHECK('Wizard'),AT(334,136),USE(PropWizard,, ?PropWizard:2)
+                GROUP,AT(330,4,49,160),USE(?GroupOfPropCHECK),FONT('Consolas')
+                    STRING('PROP:'),AT(345,6),USE(?Prop:Heading)
+                    CHECK('Above'),AT(334,14),USE(PropAbove2)
+                    CHECK('Below'),AT(334,23),USE(PropBelow2)
+                    CHECK('Left'),AT(334,32),USE(PropLeft2)
+                    CHECK('Right'),AT(334,40),USE(PropRight2)
+                    CHECK('UP  '),AT(334,52),USE(PropUp2)
+                    CHECK('Down'),AT(334,61),USE(PropDown2)
+                    CHECK('UpDown'),AT(334,70),USE(PropUpDown2)
+                    CHECK('HScroll'),AT(334,80),USE(PropHscroll2)
+                    CHECK('Join'),AT(334,89),USE(PropJoin2)
+                    CHECK('Broken'),AT(334,98),USE(PropBrokenTabs,, ?PropBrokenTabs:2)
+                    CHECK('Spread'),AT(334,110),USE(PropSpread,, ?PropSpread:2)
+                    CHECK('NoSheet'),AT(334,119),USE(PropNoSheet,, ?PropNoSheet:2)
+                    CHECK('Wizard'),AT(334,128),USE(PropWizard,, ?PropWizard:2)
+                    CHECK('Flat'),AT(334,137),USE(PropFlat,, ?PropFlat:2)
                     CHECK('Layout'),AT(334,145),USE(PropLayout,, ?PropLayout:2)
                     CHECK('NoTheme'),AT(334,154),USE(PropNoTheme,, ?PropNoTheme:2)
                 END
@@ -187,7 +194,7 @@ Window WINDOW('SHEET TAB - Property and Attribute Explorer'),AT(,,388,263),GRAY,
                         'luding Blanks')
             END
         END
-        TEXT,AT(4,182,,81),FULL,USE(TabzRect),BOXED,FLAT,VSCROLL,FONT('Consolas',10)
+        TEXT,AT(4,182),FULL,USE(TabzRect),BOXED,FLAT,VSCROLL,FONT('Consolas',10)
     END
 
 DOO CLASS                      !----- ROUTINE's replaced by DOO Class -----
@@ -231,8 +238,14 @@ WndPrvCls   CBWndPreviewClass
         OF ?PropNoSheet OROF ?PropNoSheet:2 ; SHT.Prop(PROP:NoSheet,PropNoSheet)
         OF ?PropWizard  OROF ?PropWizard:2  ; SHT.Prop(PROP:Wizard, PropWizard)
         OF ?PropSpread  OROF ?PropSpread:2  ; SHT.Prop(PROP:Spread ,PropSpread)
+        OF ?PropFlat    OROF ?PropFlat:2    ; SHT.Prop(PROP:Flat   ,PropFlat)
         OF ?PropLayout  OROF ?PropLayout:2  ; SHT.Prop(PROP:Layout ,PropLayout)
         OF ?PropNoTheme OROF ?PropNoTheme:2 ; SHT.Prop(PROP:NoTheme,PropNoTheme)
+                                              OMIT('!** Manifest ON **',_Manifested_On_)   !Project has: _Manifested_On_=>1
+                                                    Message('This Project did not include a Manifest for Visual Styles.' & |
+                                                            '|Checking the "No OS Theme" box will have no effect.' & |
+                                                            '||To test this build and run the project with "_Style" in the name.|',0{PROP:Text})
+                                              !** Manifest ON **        
 
         OF ?TabLocation ; TabLocPROP = CHOOSE(TabLocation,PROP:Above,PROP:Below,PROP:Left,PROP:Right)
                           SHT.Prop(TabLocPROP ,1  )
@@ -371,6 +384,7 @@ PanzRect    STRING(200)
              CHOOSE(~PropSpread,'',', SPREAD') & |
              CHOOSE(~PropWizard,'',', WIZARD') & |
              CHOOSE(~PropNoSheet,'',', NOSHEET') &'  '& |  
+             |  !CHOOSE(~PropFlat   ,'',', FLAT') &'  '& |      !5/13/26 "FLAT" does not work in Code, Prop:Flat in 12.0.14000
              '<13,10>' & |
              CHOOSE(1=PropBrokenTabs OR Scrolling<2,'','<13,10>?Sheet{{PROP:BrokenTabs}=False') & |
              CHOOSE(~PropLayout,'','<13,10>?Sheet{{PROP:Layout}=1') & |
@@ -474,13 +488,14 @@ TbNdx   USHORT,AUTO
     SHT.RD(Prop:Down    , 'PROP:Down')
     SHT.RD(PROP:UpsideDown   , 'PROP:UpsideDown   ')
 
-    SHT.RD(Prop:Spread , 'PROP:Spread  -- Tab Ear Width Fills Space')
     SHT.RD(Prop:HScroll, 'PROP:HScroll -- 1 Row, 1 Button on Both Ends')
     SHT.RD(Prop:Join   , 'PROP:Join    -- 1 Row, 2 Buttons on One End')
 
     SHT.RD(PROP:BrokenTabs, 'PROP:BrokenTabs')
+    SHT.RD(Prop:Spread , 'PROP:Spread  -- Tab Ear Width Fills Space')
     SHT.RD(Prop:NoSheet, 'PROP:NoSheet')
     SHT.RD(Prop:Wizard , 'PROP:Wizard -- No Tab Ears')
+    SHT.RD(PROP:Flat    , 'PROP:Flat -- Requires 12.0.14000')
     SHT.RD(Prop:Layout , 'PROP:Layout -- Right-to-Left ')
     SHT.RD(PROP:TabSheetStyle , 'PROP:TabSheetStyle ')
     SHT.RD(PROP:NoTheme , 'PROP:NoTheme -- Turn Off OS Sheet Theme / Visual Styles')
@@ -535,6 +550,11 @@ DOO.TipsOnControls PROCEDURE()
                     '<13,10>then you can create the panel(s) style and colors you desire.' & |
                     '<13,10><13,10>The user moves from TAB to TAB under program control, ' & |
                     '<13,10>i.e. Next / Previous buttons that SELECT(?TabX).'
+    ?PropFlat{PROP:Tip}='Sheet and Tabs appear as "Flat" without 3D effects and borders. (PROP:Flat)' & |
+                    '<13,10>Added in Clarion 12.0.14000 maintenance release'&  |
+                    '<13,10>SHEET with FLAT Attribute is not allowed by the Compiler or Designer'&  |
+                    '<13,10>Flat has no affect when XP Visual Styles are used (unless "No OS Theme" is checked)'&  |
+                    '<13,10>Prior to 14000 possible with Windows API "Tab Controls and Property Sheets" Styles TCS_FLATBUTTONS'
     ?PropLayout{PROP:Tip}='TABs display flipped Right-to-Left wih first tab on Right edge (PROP:LAYOUT).' & |
                    '<13,10>A style of (1) essentially "flips" the window controls display as a mirror image'&  |
                    '<13,10>of the layout specified in the Window Formatter.' & |
@@ -549,6 +569,7 @@ DOO.TipsOnControls PROCEDURE()
     ?PropSpread:2 {PROP:Tip} = ?PropSpread{PROP:Tip}
     ?PropNoSheet:2{PROP:Tip} = ?PropNoSheet{PROP:Tip}
     ?PropWizard:2 {PROP:Tip} = ?PropWizard{PROP:Tip}
+    ?PropFlat:2   {PROP:Tip} = ?PropFlat{PROP:Tip}
     ?PropLayout:2 {PROP:Tip} = ?PropLayout{PROP:Tip}
     ?PropNoTheme:2{PROP:Tip} = ?PropNoTheme{PROP:Tip}
 
@@ -648,7 +669,7 @@ TabTxt  PSTRING(10),AUTO
          TbFEQ=?Sheet1{PROP:Child,TbNdx}
          EXECUTE PopNo
            TbFEQ{PROP:Text}='Tab' & CHOOSE(TbNdx<=9,'&' & TbNdx, '1&' & TbNdx%10)
-           TbFEQ{PROP:Text}=CHOOSE(TbNdx,'&Alfa','Bravo','&Charlie','&Delta','&Echo','&Foxtrot','&Golf','&Hotel','&India','&Juliett','&Kilo','&Lima')
+           TbFEQ{PROP:Text}=CHOOSE(TbNdx,'&Alfa','&Bravo','&Charlie','&Delta','&Echo','&Foxtrot','&Golf','&Hotel','&India','&Juliett','&Kilo','&Lima')
            TbFEQ{PROP:Text}=CHOOSE(TbNdx,'One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve')
            TbFEQ{PROP:Text}=CHOOSE(TbNdx,'January','February','March','April','May','June','July','August','September','October','November','December')
            TbFEQ{PROP:Text}=CHOOSE(TbNdx,'Jan','Feb','March','Apr','May','June','July','Aug','Sep','Oct','Nov','Dec')
